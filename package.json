@@ -1,0 +1,48 @@
+{
+  "name": "yxfer",
+  "version": "0.1.0",
+  "description": "Drag-and-drop file transfer for remote hosts (SFTP/SSH, more to come)",
+  "main": "./out/main/index.js",
+  "author": {
+    "name": "Yonk",
+    "email": "matt@theyonk.com"
+  },
+  "homepage": "https://github.com/theyonk/yxfer",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "npm run typecheck && electron-vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "test": "node scripts/test.mjs",
+    "start": "electron-vite preview",
+    "setup": "node scripts/setup.mjs",
+    "doctor": "node scripts/setup.mjs --check",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "node scripts/build-installers.mjs",
+    "dist:mac": "node scripts/build-installers.mjs mac",
+    "dist:win": "node scripts/build-installers.mjs win",
+    "dist:linux": "node scripts/build-installers.mjs linux",
+    "dist:all": "node scripts/build-installers.mjs all"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1098.0",
+    "@aws-sdk/lib-storage": "^3.1098.0",
+    "ssh2": "^1.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "@types/ssh2": "^1.15.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "esbuild": "^0.28.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  }
+}

@@ -1,0 +1,67 @@
+appId: com.theyonk.yxfer
+productName: yxfer
+copyright: Copyright © 2026 Yonk
+directories:
+  buildResources: build
+  output: release
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!test/*'
+  - '!scripts/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintrc,.prettierrc,tsconfig.json,tsconfig.*.json}'
+  - '!release/*'
+asarUnpack:
+  - resources/**
+
+mac:
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+  category: public.app-category.utilities
+  # Hardened runtime off keeps unsigned local builds launchable. Turn it on
+  # (with entitlements) once there is a Developer ID to sign and notarize with.
+  hardenedRuntime: false
+  identity: null
+dmg:
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+win:
+  # No arch list here on purpose: scripts/build-installers.mjs passes one arch
+  # per invocation. Listing both here makes NSIS additionally emit a combined
+  # dual-arch installer of twice the size, and a CLI --x64 does not override it.
+  target:
+    - nsis
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  # Default name contains spaces, which is awkward on the command line.
+  artifactName: ${productName}-${version}-setup-${arch}.${ext}
+
+linux:
+  target:
+    - target: AppImage
+      arch: [x64, arm64]
+    - target: deb
+      arch: [x64, arm64]
+  category: Utility
+  synopsis: Drag-and-drop file transfer for SFTP and S3-compatible storage
+  maintainer: Yonk <matt@theyonk.com>
+  artifactName: ${productName}-${version}-${arch}.${ext}
+deb:
+  # ssh2 and the AWS SDK are pure JS; these are Electron's own runtime deps.
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libsecret-1-0
+
+npmRebuild: false
