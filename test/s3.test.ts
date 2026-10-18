@@ -43,14 +43,13 @@ export async function runS3Suite(): Promise<number> {
       endpoint: `http://127.0.0.1:${server.port}`,
       prefix: 'team',
       accessKeyId: 'AKIATEST',
-      forcePathStyle: true,
-      hasStoredSecret: true
+      forcePathStyle: true
     }
   })
-  store.setSecret(profile.id, 'secret-key')
 
   s.section('Connect')
-  const session = await sessions.open(profile.id)
+  // Passed per-connection, as the UI does without a keychain; headless CI has none.
+  const session = await sessions.open(profile.id, 'secret-key')
   s.check('session opened', Boolean(session.id))
   s.check('reports prefix-based directories', session.capabilities.realDirectories === false)
   s.check('reports no POSIX permissions', session.capabilities.permissions === false)
@@ -204,9 +203,8 @@ export async function runS3Suite(): Promise<number> {
       forcePathStyle: true
     }
   })
-  store.setSecret(badProfile.id, 'x')
   let message = ''
-  await sessions.open(badProfile.id).catch((e: Error) => (message = e.message))
+  await sessions.open(badProfile.id, 'x').catch((e: Error) => (message = e.message))
   s.check('missing bucket gives a clear error', /was not found/i.test(message), message)
 
   await sessions.close(session.id)

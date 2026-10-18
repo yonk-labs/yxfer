@@ -108,4 +108,6 @@ These look like bugs but are decisions; read the surrounding comment before chan
 `.github/workflows/release.yml` builds each platform on its native runner on a `v*` tag
 push (or manual dispatch), runs the tests first, and attaches installers to a GitHub
 Release. macOS `.dmg` requires a macOS host; Windows and Linux cross-build from anywhere.
-Builds are unsigned unless the `CSC_LINK` / `WIN_CSC_LINK` secrets are populated.
+Builds are unsigned unless the `MAC_CERT_P12_BASE64` / `MAC_CERT_PASSWORD` and
+`WIN_CERT_P12_BASE64` / `WIN_CERT_PASSWORD` repository secrets are populated (the workflow
+maps them to electron-builder's `CSC_LINK` / `WIN_CSC_LINK` env vars).
